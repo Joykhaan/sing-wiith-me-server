@@ -25,6 +25,12 @@ async function run(){
         app.get('/services', async(req,res)=>{
             const query ={}
             const cursor =serviceCollection.find(query);
+            const services = await cursor.limit(3).toArray();
+            res.send(services);
+        })
+        app.get('/allservices', async(req,res)=>{
+            const query ={}
+            const cursor =serviceCollection.find(query);
             const services = await cursor.toArray();
             res.send(services);
         })
@@ -66,6 +72,13 @@ async function run(){
             const cursor =reviewCollection.find(query);
             const reviews = await cursor.toArray();
             res.send(reviews);
+        })
+        // delete
+        app.delete('/delmyreview/:id', async(req,res)=>{
+            const id =req.params.id
+            const query ={ _id: ObjectId(id) }
+            const result=await reviewCollection.deleteOne(query)
+            res.send(result);
         })
 
         app.post('/addservices', async(req, res)=>{
