@@ -111,7 +111,7 @@ run().catch(err => console.error(err));
 
 // console.log(process.env.DB_USER)
 app.get('/',(req,res)=>{
-    res.send('look mama tor heda')
+    res.send('look mama ')
 });
 
 app.listen(port,()=>{
