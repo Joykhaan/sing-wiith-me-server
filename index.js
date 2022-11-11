@@ -22,12 +22,14 @@ async function run(){
         const reviewCollection = client.db('singwithjoy').collection('reviews');
         const addServicesCollection = client.db('singwithjoy').collection('addServices');
 
+        // get services api
         app.get('/services', async(req,res)=>{
             const query ={}
             const cursor =serviceCollection.find(query);
             const services = await cursor.limit(3).toArray();
             res.send(services);
         })
+        // get allservices api
         app.get('/allservices', async(req,res)=>{
             const query ={}
             const cursor =serviceCollection.find(query);
@@ -38,19 +40,18 @@ async function run(){
         app.get('/services/:id', async(req,res)=>{
             const Id = req.params.id
             const query ={ _id: ObjectId(Id) }
-            // const cursor =serviceCollection.findOne(query);
             const services = await serviceCollection.findOne(query);
             res.send(services);
         })
 
-        // reviwes api
+        // reviwes api post
         app.post('/review', async(req, res)=>{
             const reviews= req.body;
             const result= await reviewCollection.insertOne(reviews);
             res.send(result)
         })
         
-
+        // reviwes api get
         app.get('/review/:id', async(req,res)=>{
             const Id = req.params.id
             const query ={ id: (Id) }
@@ -59,6 +60,7 @@ async function run(){
             res.send(reviews);
         })
 
+        //my review
         app.get('/myreview/:uid', async(req,res)=>{
             const uid =req.params.uid
             const query ={uid: (uid)}
@@ -69,7 +71,6 @@ async function run(){
         app.get('/update/:id', async(req,res)=>{
             const Id = req.params.id
             const query ={ _id: ObjectId(Id) }
-            // const cursor =serviceCollection.findOne(query);
             const review = await reviewCollection.findOne(query);
             res.send(review);
         })
