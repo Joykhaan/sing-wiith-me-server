@@ -73,12 +73,33 @@ async function run(){
             const reviews = await cursor.toArray();
             res.send(reviews);
         })
+        app.get('/update/:id', async(req,res)=>{
+            const Id = req.params.id
+            const query ={ _id: ObjectId(Id) }
+            // const cursor =serviceCollection.findOne(query);
+            const review = await reviewCollection.findOne(query);
+            res.send(review);
+        })
         // delete
         app.delete('/delmyreview/:id', async(req,res)=>{
-            const id =req.params.id
-            const query ={ _id: ObjectId(id) }
-            const result=await reviewCollection.deleteOne(query)
+            const id =req.params.id;
+            const query ={ _id: ObjectId(id) };
+            const result=await reviewCollection.deleteOne(query);
             res.send(result);
+        })
+        app.put('/delmyreview/:id', async(req,res)=>{
+            const id =req.params.id;
+            const filter ={ _id: ObjectId(id) };
+            const Review= req.body;
+            const option = {upsert:true};
+            const updateReview={
+                $set:{
+                    review: Review.review
+                }
+            };
+            const result=await reviewCollection.updateOne(filter,updateReview,option);
+            res.send(result);
+            
         })
 
         app.post('/addservices', async(req, res)=>{
